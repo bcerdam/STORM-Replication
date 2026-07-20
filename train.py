@@ -23,6 +23,7 @@ from scripts.models.agent.actor import Actor
 from collections import deque
 from evaluation import run_episode
 import warnings
+from tqdm import tqdm
 warnings.filterwarnings("ignore", message="The parameter 'pretrained' is deprecated")
 warnings.filterwarnings("ignore", message="Arguments other than a weight enum or `None` for 'weights' are deprecated")
 
@@ -164,7 +165,10 @@ if __name__ == '__main__':
 
     context_obs = deque(maxlen=ENVIROMENT_CONTEXT_LENGTH)
     context_act = deque(maxlen=ENVIROMENT_CONTEXT_LENGTH)  
+    pbar = tqdm(total=TOTAL_ENV_STEPS)
     for env_step in range(TOTAL_ENV_STEPS):
+        if (env_step+1) % 5000 == 0:
+            pbar.update(5000)
         context_obs.append(observation)
         context_act.append(action)
 
@@ -320,3 +324,7 @@ if __name__ == '__main__':
                             step=env_step, 
                             path=os.path.join(RUN_DIR, "checkpoints"))
             
+    remainder = TOTAL_ENV_STEPS%5000
+    if remainder != 0:
+        pbar.update(remainder)
+    pbar.close()        

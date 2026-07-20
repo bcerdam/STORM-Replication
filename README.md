@@ -14,13 +14,13 @@ cd STORM-Replication
 **2. Create a virtual environment**
 
 ```bash
-python -m venv venv
+python3 -m venv .venv
 ```
 
 **3. Activate the virtual environment**
 
 ```bash
-source venv/bin/activate
+source .venv/bin/activate
 ```
 
 **4. Install the requirements**
@@ -39,9 +39,11 @@ If necessary, you can go to config/ to change the agent, world model or environm
 python3 train.py
 ```
 
-## Evaluation
+You can monitor the training curves and agent performance with tensorboard:
 
-...
+```bash
+tensorboard --logdir output/run
+```
 
 ## Acknowledgments
 
